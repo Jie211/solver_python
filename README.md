@@ -1,8 +1,17 @@
 ## Setup
 
-https://python-poetry.org/docs/#installation
 ```
-poetry install
+pyenv install anaconda3-2023.03
+pyenv local anaconda3-2023.03
+conda create -n solver python=3.9 anaconda
+source activate solver
+conda install rich scipy numpy numba
+
+# openmp
+conda create -n solver_openmp python=3.9 --no-default-packages
+conda activate solver_openmp
+conda install numba cffi -c drtodd13 -c conda-forge --override-channels
+conda install rich scipy
 ```
 
 ## Setup Matrix
@@ -25,12 +34,6 @@ wget https://math.nist.gov/pub/MatrixMarket2/Harwell-Boeing/bcsstruc2/bcsstk17.m
 gunzip -d bcsstk17.mtx.gz
 mv bcsstk17.mtx matrix/
 python mmInfo.py matrix/bcsstk17.mtx
-```
-
-反復の結果が正解に近づいたかどうかを確認するため、
-予めに未知ベクトルを1になるように、右辺ベクトルを作成する。
-```
-$$ A\boldsymbol{x}=\boldsymbol{b} $$
 ```
 
 ## Run
@@ -62,6 +65,7 @@ python main.py -v -cg -t bcsstk17 -imax 30000 -e 1e-10
 
 ## Benchmark
 Apple M1 Pro
+
 ### bcsstk14
 ```
 # basic
@@ -85,3 +89,9 @@ Apple M1 Pro
                     INFO     [2023-06-17 22:07:07,770][solver]: INFO - CG method                                                                                                                                                     main.py:23
 [06/17/23 22:07:13] INFO     [2023-06-17 22:07:13,938][solver]: INFO - is_converged = True, loop = 11293, time = 6 s          
 ```
+
+## Memo
+
+try icc_rt in linux
+
+https://numba.pydata.org/numba-doc/latest/user/performance-tips.html#intel-svml

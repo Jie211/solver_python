@@ -2,8 +2,20 @@ import logging
 
 import numpy as np
 import numba as nb
+
+from numba.openmp import openmp_context as openmp
+
 from scipy.sparse import csr_matrix
 from rich.logging import RichHandler
+
+
+@nb.njit(fastmath=True)
+def norm2_openmp(array):
+    norm = 0.0
+    numba.openmp.omp_set_num_threads(4)
+    for i in nb.prange(array.shape[0]):
+        norm += array[i] * array[i]
+    return np.sqrt(norm)
 
 
 @nb.njit(fastmath=True, parallel=True)
