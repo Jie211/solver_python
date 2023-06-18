@@ -85,3 +85,46 @@ Apple M1 Pro
                     INFO     [2023-06-17 22:07:07,770][solver]: INFO - CG method                                                                                                                                                     main.py:23
 [06/17/23 22:07:13] INFO     [2023-06-17 22:07:13,938][solver]: INFO - is_converged = True, loop = 11293, time = 6 s          
 ```
+
+CentOS7 8v/16GB
+### bcsstk14
+```
+# basic
+(solver-py3.9) [gchen@gchen-sandbox]~/solver_python% python main.py -cg -t bcsstk14 -imax 30000 -e 1e-9
+[06/18/23 10:36:44] INFO     [2023-06-18 10:36:44,983][solver]: INFO - mat_file: ./matrix/bcsstk14.npz, max_inter: 30000, epsilon: 1.000000e-09, numpy: False, numba: False     main.py:19
+                    INFO     [2023-06-18 10:36:44,999][solver]: INFO - CG method                                                                                                main.py:23
+[06/18/23 10:52:17] INFO     [2023-06-18 10:52:17,165][solver]: INFO - is_converged = True, loop = 11496, time = 932 s     
+
+# with numpy
+(solver-py3.9) [gchen@gchen-sandbox]~/solver_python% python main.py -cg -t bcsstk14 -imax 30000 -e 1e-9 -np
+[06/18/23 10:52:27] INFO     [2023-06-18 10:52:27,320][solver]: INFO - mat_file: ./matrix/bcsstk14.npz, max_inter: 30000, epsilon: 1.000000e-09, numpy: True, numba: False      main.py:19
+                    INFO     [2023-06-18 10:52:27,337][solver]: INFO - CG method                                                                                                main.py:23
+                    INFO     [2023-06-18 10:52:27,339][solver]: INFO - use numpy                                                                                                main.py:26
+[06/18/23 10:52:29] INFO     [2023-06-18 10:52:29,725][solver]: INFO - is_converged = True, loop = 11498, time = 2 s      
+
+# with numba
+(solver-py3.9) [gchen@gchen-sandbox]~/solver_python% python main.py -cg -t bcsstk14 -imax 30000 -e 1e-9 -nb
+[06/18/23 10:52:33] INFO     [2023-06-18 10:52:33,731][solver]: INFO - mat_file: ./matrix/bcsstk14.npz, max_inter: 30000, epsilon: 1.000000e-09, numpy: False, numba: True      main.py:19
+                    INFO     [2023-06-18 10:52:33,747][solver]: INFO - CG method                                                                                                main.py:23
+[06/18/23 10:52:38] INFO     [2023-06-18 10:52:38,157][solver]: INFO - is_converged = True, loop = 11286, time = 4 s              
+
+# numba with SVML
+poetry add icc_rt
+(solver-py3.9) [gchen@gchen-sandbox]~/solver_python% python main.py -cg -t bcsstk14 -imax 30000 -e 1e-9 -nb
+[06/18/23 10:54:51] INFO     [2023-06-18 10:54:51,941][solver]: INFO - mat_file: ./matrix/bcsstk14.npz, max_inter: 30000, epsilon: 1.000000e-09, numpy: False, numba: True      main.py:19
+                    INFO     [2023-06-18 10:54:51,958][solver]: INFO - CG method                                                                                                main.py:23
+[06/18/23 10:54:56] INFO     [2023-06-18 10:54:56,027][solver]: INFO - is_converged = True, loop = 11286, time = 4 s           
+
+# numba with openmp
+pyenv install anaconda3-2023.03
+pyenv local anaconda3-2023.03
+conda create -n solver_openmp python=3.9 --no-default-packages
+conda activate solver_openmp
+conda install numba cffi -c drtodd13 -c conda-forge --override-channels
+conda install rich scipy
+https://www.openmp.org/wp-content/uploads/OpenMPBoothTalk-PyOMP.pdf
+(solver-py3.9) [gchen@gchen-sandbox]~/solver_python% python main.py -cg -t bcsstk14 -imax 30000 -e 1e-9 -nb
+[06/18/23 11:54:51] INFO     [2023-06-18 11:54:51,941][solver]: INFO - mat_file: ./matrix/bcsstk14.npz, max_inter: 30000, epsilon: 1.000000e-09, numpy: False, numba: True      main.py:19
+                    INFO     [2023-06-18 11:54:51,958][solver]: INFO - CG method                                                                                                main.py:23
+[06/18/23 11:54:56] INFO     [2023-06-18 11:54:56,027][solver]: INFO - is_converged = True, loop = 11286, time = 4 s     
+```
