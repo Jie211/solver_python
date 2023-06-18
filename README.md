@@ -27,16 +27,10 @@ mv bcsstk17.mtx matrix/
 python mmInfo.py matrix/bcsstk17.mtx
 ```
 
-反復の結果が正解に近づいたかどうかを確認するため、
-予めに未知ベクトルを1になるように、右辺ベクトルを作成する。
-```
-$$ A\boldsymbol{x}=\boldsymbol{b} $$
-```
-
 ## Run
 ```
 ❯ python main.py -h
-usage: main.py [-h] [-v] [-cg] [-t TARGET_MATRIX] [-b BASE_DIR] [-imax ITERATE_MAX] [-e EPSILON] [-np] [-nb]
+usage: main.py [-h] [-v] [-cg] [-t TARGET_MATRIX] [-b BASE_DIR] [-fout FIGURE_OUTPUT_PATH] [-imax ITERATE_MAX] [-e EPSILON] [-np] [-nb] [-f]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -47,18 +41,28 @@ optional arguments:
                         target matrix name
   -b BASE_DIR, --base_dir BASE_DIR
                         base directory
+  -fout FIGURE_OUTPUT_PATH, --figure_output_path FIGURE_OUTPUT_PATH
+                        figure output path
   -imax ITERATE_MAX, --iterate_max ITERATE_MAX
                         max iteration
   -e EPSILON, --epsilon EPSILON
                         epsilon
   -np, --numpy          use numpy
   -nb, --numba          use numba
+  -f, --figure          create figure
 ```
 
 ```
 # cg
 python main.py -v -cg -t bcsstk17 -imax 30000 -e 1e-10
 ```
+
+## Figure
+
+![BCSSTK14](https://raw.githubusercontent.com/Jie211/solver_python/main/figure/bcsstk14_30000_1e-09_cg.png)
+
+![BCSSTK17](https://raw.githubusercontent.com/Jie211/solver_python/main/figure/bcsstk17_30000_1e-09_cg.png)
+
 
 ## Benchmark
 Apple M1 Pro

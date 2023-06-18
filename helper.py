@@ -4,6 +4,7 @@ import numpy as np
 import numba as nb
 from scipy.sparse import csr_matrix
 from rich.logging import RichHandler
+import plotly.graph_objects as go
 
 
 @nb.njit(fastmath=True, parallel=True)
@@ -87,3 +88,28 @@ def load_sparse_csr(filename):
     )
     b_vec = loader['b_vec']
     return new_csr_mat, b_vec
+
+
+def create_fig(x, y, title, x_label, y_label, epsilon=0, y_log=True, y_e=True, plot_epsilon=False):
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=x, y=y, mode='lines+markers'))
+    fig.update_layout(
+        title=title,
+        xaxis_title=x_label,
+        yaxis_title=y_label,
+        font=dict(
+            family="Courier New, monospace",
+            size=18,
+            color="#7f7f7f"
+        ),
+        yaxis={
+            'tickformat': 'e' if y_e else ''
+        }
+    )
+    fig.update_yaxes(type="log" if y_log else "linear")
+    fig.add_hline(y=epsilon, line_dash="dot", line_color="red" if plot_epsilon else "outside")
+    return fig
+
+
+def save_fig(fig, filename, fig_format='png'):
+    fig.write_image(filename, format=fig_format, engine="kaleido")
