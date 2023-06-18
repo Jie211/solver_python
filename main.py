@@ -2,17 +2,18 @@ import argparse
 import logging
 import sys
 import time
+
 import numpy as np
 
-from cg import cg_method_basic, cg_method_numpy, cg_method_numba
-from helper import load_sparse_csr, get_logger, create_fig, save_fig
+from cg import cg_method_basic, cg_method_numba, cg_method_numpy
+from helper import create_fig, get_logger, load_sparse_csr, save_fig
 
-logger = get_logger('solver')
+logger = get_logger("solver")
 logger_level = logging.INFO
 
 
 def main_handler(args: argparse.Namespace):
-    mat_file = str(args.base_dir) + '/' + str(args.target_matrix) + '.npz'
+    mat_file = str(args.base_dir) + "/" + str(args.target_matrix) + ".npz"
     max_inter = args.iterate_max
     epsilon = args.epsilon
     use_numba = args.numba
@@ -41,9 +42,10 @@ def main_handler(args: argparse.Namespace):
         logger.info("is_converged = %s, loop = %s, time = %d s", is_converged, k, time_elapsed)
 
         if figure:
-            fig = create_fig(np.arange(1, k), residual, "CG", "loop", "residual", epsilon=epsilon, plot_epsilon=True)
-            save_fig(fig, str(fig_output_path) + '/'
-                     + str(args.target_matrix) + "_" + str(max_inter) + "_" + str(epsilon) + '_cg.png')
+            fig = create_fig(np.arange(1, k), residual, "CG Method/"+str(args.target_matrix),
+                             "loop", "residual", epsilon=epsilon, plot_epsilon=True)
+            save_fig(fig, str(fig_output_path) + "/"
+                     + str(args.target_matrix) + "_" + str(max_inter) + "_" + str(epsilon) + "_cg.png")
             logger.info("save figure Done")
 
     return None
@@ -89,5 +91,5 @@ def main(argv=None):
     return None
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main(sys.argv)

@@ -15,6 +15,48 @@ plotly = "^5.15.0"
 kaleido = "0.2.1"
 
 
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.0.272"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+# E -> pycodestyle
+# F -> pyflakes
+# C -> mccabe
+# W -> pydocstyle
+# B -> bugbear
+# Q -> flake8-quotes
+# U -> flake8-unused-arguments
+select = ["C", "E", "F", "W", "B", "Q", "U", "I"]
+ignore = []
+fixable = ["C", "E", "F", "W", "B", "Q", "U", "I"]
+unfixable = []
+exclude = [
+    ".eggs",
+    ".git",
+    ".mypy_cache",
+    ".ruff_cache",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "venv",
+    ".pytest_cache",
+    "dist",
+    "__pycache__",
+    ".sql",
+    ".ddl"
+]
+line-length = 119
+target-version = "py39"
+
+[tool.ruff.mccabe]
+max-complexity = 20
+
+[tool.ruff.flake8-quotes]
+docstring-quotes = "double"
+
+[tool.ruff.pydocstyle]
+convention = "pep257"

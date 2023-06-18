@@ -2,10 +2,8 @@ import logging
 
 import numpy as np
 from numpy.linalg import norm
-from numba import jit, types
-from scipy.sparse import csr_matrix
 
-from helper import get_logger, norm2, dot_mat, dot_vec, norm2_numba, dot_vec_numba, dot_mat_numba
+from helper import dot_mat, dot_mat_numba, dot_vec, dot_vec_numba, get_logger, norm2, norm2_numba
 
 logger = get_logger(__name__)
 
