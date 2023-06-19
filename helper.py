@@ -1,8 +1,10 @@
 import logging
 
+import cupy as cp
 import numba as nb
 import numpy as np
 import plotly.graph_objects as go
+from cupy.sparse import csr_matrix as csr_matrix_cupy
 from rich.logging import RichHandler
 from scipy.sparse import csr_matrix
 
@@ -85,6 +87,16 @@ def load_sparse_csr(filename):
     new_csr_mat = csr_matrix(
         (loader["data"], loader["indices"], loader["indptr"]),
         shape=loader["shape"]
+    )
+    b_vec = loader["b_vec"]
+    return new_csr_mat, b_vec
+
+
+def load_sparse_csr_cupy(filename):
+    loader = cp.load(filename)
+    new_csr_mat = csr_matrix_cupy(
+        (loader["data"], loader["indices"], loader["indptr"]),
+        shape=tuple(loader["shape"])
     )
     b_vec = loader["b_vec"]
     return new_csr_mat, b_vec
